@@ -17,7 +17,7 @@ function Light(props) {
   }, [])
 
   return (
-    <div className={`light ${color}`}> {uptime} </div>
+    <div className={`light`} style={{backgroundColor: color}}> {uptime} </div>
   )
 }
 

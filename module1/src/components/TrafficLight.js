@@ -2,30 +2,37 @@ import React, { useEffect, useState } from 'react'
 import TrafficLightContainer from './TrafficLightContainer'
 import Light from './Light'
 
-const TRAFFIC_LIGHT_COLORS = ['red', 'amber', 'green']
+const DEFAULT_TRAFFIC_LIGHT_COLORS = ['red', 'amber', 'green']
 
-function TrafficLight() {
-  const [currentLight, setCurrentLight] = useState(TRAFFIC_LIGHT_COLORS[0])
+function TrafficLight({
+  location="Unknown location",
+  containerColor="black", 
+  trafficLightColors=DEFAULT_TRAFFIC_LIGHT_COLORS
+}) {
+  const [currentLight, setCurrentLight] = useState(trafficLightColors[0])
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentLight(currentLight => {
-        const nextIndex = TRAFFIC_LIGHT_COLORS.indexOf(currentLight) + 1;
-        return TRAFFIC_LIGHT_COLORS[nextIndex % 3];
+        const nextIndex = trafficLightColors.indexOf(currentLight) + 1;
+        return trafficLightColors[nextIndex % 3];
       })
     }, 3000)
 
     return () => {
       clearInterval(interval);
     }
-  }, [])
+  }, [trafficLightColors])
 
   return (
-    <TrafficLightContainer>
-      {TRAFFIC_LIGHT_COLORS.map((color) => (
-        <Light color={color === currentLight ? color : 'gray'} key={color} />
-      ))}
-    </TrafficLightContainer>
+    <div>
+      <TrafficLightContainer containerColor={containerColor}>
+        {trafficLightColors.map((color) => (
+          <Light color={color === currentLight ? color : 'gray'} key={color} />
+        ))}
+      </TrafficLightContainer>
+      <span style={{textAlign: 'center'}}>{location}</span>
+    </div>
   )
 }
 
